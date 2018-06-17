@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+
+require './lib/PGA_Tour_Reader'
+
+PGATourReader::CLI.new.call

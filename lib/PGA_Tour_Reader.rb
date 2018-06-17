@@ -1,5 +1,2 @@
-require "PGA_Tour_Reader/version"
-
-module PGATourReader
-  # Your code goes here...
-end
+require_relative "PGA_Tour_Reader/version"
+require_relative "PGA_Tour_Reader/cli.rb"
