@@ -14,12 +14,12 @@ class PGATourReader::CLI
   end
 
   def list_tournaments
-    puts "say list to list all the tournaments for the current"
-    puts "PGA Tour season"
+    puts "current date is 20#{Time.now.strftime("%y/%m/%d")} in yyyy/mm/dd"
+    puts "say \"list\" to list all the tournaments for the current PGA Tour season"
     #https://www.pgatour.com/tournaments/schedule.html
-    puts "for all the tournaments for a specific month please list the month"
+    puts "for \"all\" the tournaments for a specific month please list the month"
     puts "for a specific tournament list the tournament name or date"
-    puts "say exit to quit"
+    puts "say \"exit\" to quit"
     get_tournaments(gets.strip.downcase)
   end
 
