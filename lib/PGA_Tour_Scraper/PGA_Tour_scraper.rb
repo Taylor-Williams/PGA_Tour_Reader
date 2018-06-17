@@ -6,6 +6,7 @@ class PGA_Tour_Scraper
     @path = path
     @tournaments = []
     save
+    scrape_tour_page
   end
 
   def self.all
@@ -17,7 +18,8 @@ class PGA_Tour_Scraper
   end
 
   def scrape_tour_page
-    puts "blah"
+    page = Nokogiri::HTML(open("http://en.wikipedia.org/"))
+    puts page.class   # => Nokogiri::HTML::Document
   end
 end
 

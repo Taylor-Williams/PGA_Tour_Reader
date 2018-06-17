@@ -9,6 +9,5 @@ require "PGA_Tour_Reader"
 # (If you use this, don't forget to add pry to your Gemfile!)
 require "pry"
 # Pry.start
-require "nokogiri"
 require "irb"
 IRB.start(__FILE__)
