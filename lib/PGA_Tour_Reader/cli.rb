@@ -9,23 +9,26 @@ class PGATourReader::CLI
     # listens to a reponse
     # scrapes the data they want
     # loops the response til they are done
-    list_tournaments
+    prompt
 
   end
 
-  def list_tournaments
+  def prompt
     puts "current date is 20#{Time.now.strftime("%y/%m/%d")} in yyyy/mm/dd"
+    # this is to remind the user of nearby weekend dates or to help them
+    # think of a month to request data for
+    # also gives me some practice with Time B)
     puts "say \"list\" to list all the tournaments for the current PGA Tour season"
     #https://www.pgatour.com/tournaments/schedule.html
     puts "for \"all\" the tournaments for a specific month please list the month"
     puts "for a specific tournament list the tournament name or date"
     puts "say \"exit\" to quit"
-    get_tournaments(gets.strip.downcase)
+    get_requested_info(gets.strip.downcase)
   end
 
-  def get_tournaments(response)
-    unless response == "exit"
-      case response
+  def get_requested_info(request)
+    unless request == "exit"
+      case request
       when "list"
         puts "OCT 5 - 8"
         puts "OCT 12 - 15"
@@ -46,7 +49,7 @@ class PGATourReader::CLI
         puts "i'm not sure what you said can you please give me a request in the"
         puts "format requested, case insensitive"
       end
-      list_tournaments
+      prompt
     end
   end
 
