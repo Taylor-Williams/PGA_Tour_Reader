@@ -1,3 +1,7 @@
+require 'nokogiri'
+require 'open-uri'
+require 'pry'
+
 class PGA_Tour_Scraper
   attr_accessor :path, :year, :tournaments #year is in the form of a string
   @@all = []
@@ -18,9 +22,10 @@ class PGA_Tour_Scraper
   end
 
   def scrape_tour_page
-    page = Nokogiri::HTML(open("http://en.wikipedia.org/"))
+    page = Nokogiri::HTML(open("#{@path}"))
+    binding.pry
     puts page.class   # => Nokogiri::HTML::Document
   end
 end
 
-PGA_Tour_Scraper.new
+PGA_Tour_Scraper.new.scrape_tour_page

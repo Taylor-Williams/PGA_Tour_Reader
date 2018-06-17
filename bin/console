@@ -10,4 +10,6 @@ require "PGA_Tour_Reader"
 require "pry"
 # Pry.start
 require "irb"
+require 'nokogiri'
+require 'open-uri'
 IRB.start(__FILE__)
