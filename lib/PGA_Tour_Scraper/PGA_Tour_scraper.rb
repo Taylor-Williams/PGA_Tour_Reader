@@ -1,7 +1,3 @@
-require 'nokogiri'
-require 'open-uri'
-require 'pry'
-
 class PGA_Tour_Scraper
   attr_accessor :path, :year, :tournaments #year is in the form of a string
   @@all = []
