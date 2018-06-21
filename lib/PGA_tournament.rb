@@ -16,7 +16,7 @@ class PGA_Tournament
   end
 
   def add_attributes(attributes)
-    attributes.each {|key, value| self.send("#{key}=", value)} unless attributes.empty?
+    attributes.each {|key, value| self.send("#{key}=", value)} if attributes
   end
 
   def save
