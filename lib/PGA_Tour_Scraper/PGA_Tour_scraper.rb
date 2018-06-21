@@ -46,18 +46,26 @@ class PGA_Tour_Scraper
         @tournaments << PGA_Tournament.new(start_date, end_date)
       end
     end
-    page.css(".tournament-text").each do |tournament_info|
+    attributes = page.css(".tournament-text").map do |tournament_info|
       tournament_info.children[1].children[0].text
       tournament_info.children[1].attributes["href"].value if tournament_info.children[1].attributes["href"]
       weird_shit = tournament_info.children[4].text.split(/\s{2,}/)
       weird_shit.shift
       puts weird_shit
+      details = {
+        :course => weird_shit[0].split(",")[0],
+        :location => "#{weird_shit[1]}#{weird_shit[2]}".strip
+      }
+      details[:purse] = "#{weird_shit[3].slice(9..-1)}" if weird_shit.length == 4
+      details
     end
+    @tournaments.each_with_index{|tournament, index| tournament.add_attributes(attributes[index - 1])}
   end
 end
 
 blah = PGA_Tour_Scraper.new
-blah.scrape_tour_page
+blah2 = blah.scrape_tour_page
+puts blah2
 # blah.tournaments.each do |tournament|
 #   puts tournament.start_date
 #   puts tournament.end_date
