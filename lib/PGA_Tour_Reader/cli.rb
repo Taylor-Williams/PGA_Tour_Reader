@@ -30,7 +30,8 @@ class PGATourReader::CLI
     unless request == "exit"
       case request
       when "list"
-        puts "some tournaments"
+        PGA_Tour_Scraper.new()
+        PGA_Season.all.first.list_dates_names
       when "month"
         puts "some month"
       when "specific tournament"

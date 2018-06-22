@@ -9,11 +9,11 @@ require_relative './PGA_season.rb'
 class PGA_Tour_Scraper
   attr_accessor :path, :year, :season
 
-  def initialize(path = "https://www.pgatour.com/tournaments/schedule.html", year = Time.now.strftime("%Y"))
+  def initialize(year = Time.now.strftime("%Y"), path = "https://www.pgatour.com/tournaments/schedule.html")
     @path = path
     @year = year
     @season = PGA_Season.new(@year)
-    # scrape_tour_page
+    scrape_tour_page
   end
 
   def scrape_tour_page
@@ -75,8 +75,3 @@ class PGA_Tour_Scraper
     end
   end
 end
-
-foo = PGA_Tour_Scraper.new()
-puts foo.season.tournaments
-foo.scrape_tour_page
-foo.season.list_dates_names
