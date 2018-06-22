@@ -31,57 +31,63 @@ class PGA_Tour_Scraper
     tournament_attributes = attribute_scraper(page)
 
     @tournaments.each_with_index do |tournament, index|
-      tournament.add_attributes(tournament_attributes[index - 1])
+      tournament.add_attributes(tournament_attributes[index])
      end
   end
 
   def date_scraper(page)
     page.css('.num-date').each do |date_info|
-      month = date_info.children[1].children.text
-      days = date_info.children[3].children.text.strip
-      if /\d/ =~ month #when tourny weekend spans end of month
-        start_date = Date.parse("#{month} #{@year}")
-        end_date = Date.parse("#{days} #{@year}")
-      else #when tourny weekend starts and ends same month
-        days = days.split(" - ")
-        start_date = Date.parse("#{month} #{days[0]} #{@year}")
-        end_date = Date.parse("#{month} #{days[1]} #{@year}")
-      end
-      start_date = set_year(start_date)
-      end_date = set_year(end_date)
-      @tournaments << PGA_Tournament.new(start_date, end_date)
+      dates = date_parser(date_info.children[1].children.text, date_info.children[3].children.text.strip)
+      @tournaments << PGA_Tournament.new(dates[0], dates[1])
     end
   end
-  #seems like new seasons are always start in oct (month 10)
+
+  def date_parser(month, days)
+    if /\d/ =~ month #when tourny weekend spans end of month
+      start_date = Date.parse("#{month} #{@year}")
+      end_date = Date.parse("#{days} #{@year}")
+    else #when tourny weekend starts and ends same month
+      days = days.split(" - ")
+      start_date = Date.parse("#{month} #{days[0]} #{@year}")
+      end_date = Date.parse("#{month} #{days[1]} #{@year}")
+    end
+    [set_year(start_date), set_year(end_date)]
+  end
+
+  #seems like new seasons always start in oct (month 10)
   def set_year(date)
     date.month.between?(10,12) ? date << 12 : date
   end
 
   def attribute_scraper(page)
     attributes = page.css(".tournament-text").map do |tournament_info|
-      url = get_url(tournament_info)
-      details = {
-        :name => tournament_info.children[1].children[0].text,
-        :url => url
-      }
-      weird_shit = tournament_info.children[4].text.split(/\s{2,}/)
-      weird_shit.shift
-      details[:course] = weird_shit[0].split(",")[0],
-      details[:location] = "#{weird_shit[1]}#{weird_shit[2]}".strip
-      details[:purse] = "#{weird_shit[3].slice(9..-1)}" if weird_shit.length == 4
-      details
+      detail_parser(tournament_info) #hash of tournament details
     end
   end
 
-  def get_url(tournament_info)
+  def detail_parser(tournament_info)
+    detail_text = tournament_info.children[4].text.split(/\s{2,}/)
+    detail_text.shift
+    details = {
+      :name => tournament_info.children[1].children[0].text,
+      :url => url_parser(tournament_info),
+      :course => detail_text[0].split(",")[0],
+      :location => "#{detail_text[1]}#{detail_text[2]}".strip
+    }
+    details[:purse] = "#{detail_text[3].slice(9..-1)}" if detail_text.length == 4
+    details
+  end
+
+  def url_parser(tournament_info)
     url = tournament_info.children[1].attributes["href"]
     if url
       url.value.start_with?("/") ? url = "https://www.pgatour.com#{url.value}" : url = url.value
     end
   end
+
 end
 
 blah = PGA_Tour_Scraper.new
 blah.tournaments.each do |tournament|
-  puts "#{tournament.url}, #{tournament.name}"
+  puts "#{tournament.name}, #{tournament.course}, #{tournament.start_date}, #{tournament.end_date}"
 end
