@@ -1,5 +1,5 @@
 require 'date'
-require_relative './tournament.rb'
+require_relative './PGA_tournament.rb'
 class PGA_Season
 
   attr_accessor :year, :tournaments

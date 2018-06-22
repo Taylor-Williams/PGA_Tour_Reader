@@ -3,26 +3,17 @@ require 'date'
 require 'open-uri'
 require 'nokogiri'
 
-require_relative 'PGA_tournament.rb'
-require_relative 'PGA_season.rb'
+require_relative './PGA_tournament.rb'
+require_relative './PGA_season.rb'
 
 class PGA_Tour_Scraper
-  attr_accessor :path, :year, :tournaments, :season
+  attr_accessor :path, :year, :season
 
   def initialize(path = "https://www.pgatour.com/tournaments/schedule.html", year = Time.now.strftime("%Y"))
     @path = path
-    @tournaments = []
     @year = year
     @season = PGA_Season.new(@year)
-    scrape_tour_page
-  end
-
-  def self.all
-    @@all
-  end
-
-  def save
-    self.class.all << self
+    # scrape_tour_page
   end
 
   def scrape_tour_page
@@ -30,15 +21,15 @@ class PGA_Tour_Scraper
     date_scraper(page) #instantiates all tournaments from this season by dates
     tournament_attributes = attribute_scraper(page)
     #zips together tournament attributes with tournament objects
-    @tournaments.each_with_index do |tournament, index|
+    @season.tournaments.each_with_index do |tournament, index|
       tournament.add_attributes(tournament_attributes[index])
-     end
+    end
   end
 
   def date_scraper(page)
     page.css('.num-date').each do |date_info|
       dates = date_parser(date_info.children[1].children.text, date_info.children[3].children.text.strip)
-      @tournaments << PGA_Tournament.new(dates[0], dates[1])
+      @season.tournaments << PGA_Tournament.new(dates[0], dates[1])
     end
   end
 
@@ -83,5 +74,9 @@ class PGA_Tour_Scraper
       url.value.start_with?("/") ? url = "https://www.pgatour.com#{url.value}" : url = url.value
     end
   end
-
 end
+
+foo = PGA_Tour_Scraper.new()
+puts foo.season.tournaments
+foo.scrape_tour_page
+foo.season.list_dates_names
