@@ -2,14 +2,12 @@ require 'date'
 require_relative './tournament.rb'
 class PGA_Season
 
-  attr_accessor :start_date, :end_date, :year, :tournaments
+  attr_accessor :year, :tournaments
 
   @@all = []
 
-  def initialize(start_date, end_date, year, tournaments = [])
-    @start_date = start_date
-    @end_date = end_date
-    @tournaments = []
+  def initialize(year, tournaments = [])
+    @tournaments = tournaments
     save
   end
 

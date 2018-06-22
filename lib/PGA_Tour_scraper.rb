@@ -4,16 +4,16 @@ require 'open-uri'
 require 'nokogiri'
 
 require_relative 'PGA_tournament.rb'
+require_relative 'PGA_season.rb'
 
 class PGA_Tour_Scraper
-  attr_accessor :path, :year, :tournaments
-  @@all = []
+  attr_accessor :path, :year, :tournaments, :season
 
   def initialize(path = "https://www.pgatour.com/tournaments/schedule.html", year = Time.now.strftime("%Y"))
     @path = path
     @tournaments = []
     @year = year
-    save
+    @season = PGA_Season.new(@year)
     scrape_tour_page
   end
 
@@ -60,21 +60,21 @@ class PGA_Tour_Scraper
 
   def attribute_scraper(page)
     attributes = page.css(".tournament-text").map do |tournament_info|
-      detail_parser(tournament_info) #hash of tournament details
+      attribute_parser(tournament_info) #hash of tournament attributes
     end
   end
 
-  def detail_parser(tournament_info)
-    detail_text = tournament_info.children[4].text.split(/\s{2,}/)
-    detail_text.shift
-    details = {
+  def attribute_parser(tournament_info)
+    attribute_text = tournament_info.children[4].text.split(/\s{2,}/)
+    attribute_text.shift
+    attributes = {
       :name => tournament_info.children[1].children[0].text,
       :url => url_parser(tournament_info),
-      :course => detail_text[0].split(",")[0],
-      :location => "#{detail_text[1]}#{detail_text[2]}"[0..-2]
+      :course => attribute_text[0].split(",")[0],
+      :location => "#{attribute_text[1]}#{attribute_text[2]}"[0..-2]
     }
-    details[:purse] = "#{detail_text[3].slice(9..-1)}" if detail_text.length == 4
-    details
+    attributes[:purse] = "#{attribute_text[3].slice(9..-1)}" if attribute_text.length == 4
+    attributes
   end
 
   def url_parser(tournament_info)
