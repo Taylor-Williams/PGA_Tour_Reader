@@ -27,6 +27,7 @@ class PGA_Tour_Scraper
 
   def scrape_tour_page
     page = Nokogiri::HTML(open("#{@path}"))
+    
     page.css('.num-date').each do |date_info|
       month = date_info.children[1].children.text
       days = date_info.children[3].children.text.strip
@@ -46,16 +47,17 @@ class PGA_Tour_Scraper
         @tournaments << PGA_Tournament.new(start_date, end_date)
       end
     end
+    
     attributes = page.css(".tournament-text").map do |tournament_info|
-      tournament_info.children[1].children[0].text
-      tournament_info.children[1].attributes["href"].value if tournament_info.children[1].attributes["href"]
+      url = tournament_info.children[1].attributes["href"].value if tournament_info.children[1].attributes["href"]
+      details = {
+        :name => tournament_info.children[1].children[0].text,
+        :url => url
+      }
       weird_shit = tournament_info.children[4].text.split(/\s{2,}/)
       weird_shit.shift
-      weird_shit
-      details = {
-        :course => weird_shit[0].split(",")[0],
-        :location => "#{weird_shit[1]}#{weird_shit[2]}".strip
-      }
+      details[:course] = weird_shit[0].split(",")[0],
+      details[:location] = "#{weird_shit[1]}#{weird_shit[2]}".strip
       details[:purse] = "#{weird_shit[3].slice(9..-1)}" if weird_shit.length == 4
       details
     end
@@ -66,8 +68,7 @@ class PGA_Tour_Scraper
 end
 
 blah = PGA_Tour_Scraper.new
-blah2 = blah.scrape_tour_page
-# blah.tournaments.each do |tournament|
-#   puts tournament.start_date
-#   puts tournament.end_date
-# end
+blah.tournaments.each do |tournament|
+ puts tournament.start_date
+ puts tournament.end_date
+end
