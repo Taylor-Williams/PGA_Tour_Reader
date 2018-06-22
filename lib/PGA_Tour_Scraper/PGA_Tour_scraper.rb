@@ -27,27 +27,29 @@ class PGA_Tour_Scraper
 
   def scrape_tour_page
     page = Nokogiri::HTML(open("#{@path}"))
-    
-    page.css('.num-date').each do |date_info|
-      month = date_info.children[1].children.text
-      days = date_info.children[3].children.text.strip
-      if /\d/ =~ month #when tourny weekend has 2 months
-        #creates a month object for both scrapes
-        start_date = Date.parse("#{month} #{@year}")
-        start_date = start_date << 12 if start_date.month.between?(10,12)
-        end_date = Date.parse("#{days} #{@year}")
-        end_date = end_date << 12 if start_date.month.between?(10,12)
-        @tournaments << PGA_Tournament.new(start_date, end_date)
-      else
-        days = days.split(" - ")
-        start_date = Date.parse("#{month} #{days[0]} #{@year}")
-        start_date = start_date << 12 if start_date.month.between?(10,12)
-        end_date = Date.parse("#{month} #{days[1]} #{@year}")
-        end_date = end_date << 12 if start_date.month.between?(10,12)
-        @tournaments << PGA_Tournament.new(start_date, end_date)
-      end
-    end
-    
+    date_scraper(page)
+    # page = Nokogiri::HTML(open("#{@path}"))
+    #
+    # page.css('.num-date').each do |date_info|
+    #   month = date_info.children[1].children.text
+    #   days = date_info.children[3].children.text.strip
+    #   if /\d/ =~ month #when tourny weekend has 2 months
+    #     #creates a month object for both scrapes
+    #     start_date = Date.parse("#{month} #{@year}")
+    #     start_date = start_date << 12 if start_date.month.between?(10,12)
+    #     end_date = Date.parse("#{days} #{@year}")
+    #     end_date = end_date << 12 if start_date.month.between?(10,12)
+    #     @tournaments << PGA_Tournament.new(start_date, end_date)
+    #   else
+    #     days = days.split(" - ")
+    #     start_date = Date.parse("#{month} #{days[0]} #{@year}")
+    #     start_date = start_date << 12 if start_date.month.between?(10,12)
+    #     end_date = Date.parse("#{month} #{days[1]} #{@year}")
+    #     end_date = end_date << 12 if start_date.month.between?(10,12)
+    #     @tournaments << PGA_Tournament.new(start_date, end_date)
+    #   end
+    # end
+
     attributes = page.css(".tournament-text").map do |tournament_info|
       url = tournament_info.children[1].attributes["href"].value if tournament_info.children[1].attributes["href"]
       details = {
@@ -61,14 +63,39 @@ class PGA_Tour_Scraper
       details[:purse] = "#{weird_shit[3].slice(9..-1)}" if weird_shit.length == 4
       details
     end
+
     @tournaments.each_with_index do |tournament, index|
       tournament.add_attributes(attributes[index - 1])
      end
+  end
+
+  def date_scraper(page)
+    page.css('.num-date').each do |date_info|
+      month = date_info.children[1].children.text
+      days = date_info.children[3].children.text.strip
+      if /\d/ =~ month #when tourny weekend has 2 months
+        #creates a month object for both scrapes
+        start_date = Date.parse("#{month} #{@year}")
+        start_date = set_year(start_date)
+        end_date = Date.parse("#{days} #{@year}")
+        end_date = set_year(end_date)
+      else
+        days = days.split(" - ")
+        start_date = Date.parse("#{month} #{days[0]} #{@year}")
+        start_date = set_year(start_date)
+        end_date = Date.parse("#{month} #{days[1]} #{@year}")
+        end_date = set_year(end_date)
+      end
+      @tournaments << PGA_Tournament.new(start_date, end_date)
+    end
+  end
+  #seems like new seasons are always start in oct (month 10)
+  def set_year(date)
+    date.month.between?(10,12) ? date << 12 : date
   end
 end
 
 blah = PGA_Tour_Scraper.new
 blah.tournaments.each do |tournament|
- puts tournament.start_date
- puts tournament.end_date
+  puts "#{tournament.start_date}, #{tournament.end_date}"
 end
