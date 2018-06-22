@@ -3,7 +3,7 @@ require 'date'
 require 'open-uri'
 require 'nokogiri'
 
-require_relative "../PGA_tournament.rb"
+require_relative 'PGA_tournament.rb'
 
 class PGA_Tour_Scraper
   attr_accessor :path, :year, :tournaments
@@ -27,9 +27,9 @@ class PGA_Tour_Scraper
 
   def scrape_tour_page
     page = Nokogiri::HTML(open("#{@path}"))
-    date_scraper(page)
+    date_scraper(page) #instantiates all tournaments from this season by dates
     tournament_attributes = attribute_scraper(page)
-
+    #zips together tournament attributes with tournament objects
     @tournaments.each_with_index do |tournament, index|
       tournament.add_attributes(tournament_attributes[index])
      end
@@ -54,9 +54,8 @@ class PGA_Tour_Scraper
     [set_year(start_date), set_year(end_date)]
   end
 
-  #seems like new seasons always start in oct (month 10)
   def set_year(date)
-    date.month.between?(10,12) ? date << 12 : date
+    date.month.between?(10,12) ? date << 12 : date #new seasons start in oct (month 10)
   end
 
   def attribute_scraper(page)
@@ -72,7 +71,7 @@ class PGA_Tour_Scraper
       :name => tournament_info.children[1].children[0].text,
       :url => url_parser(tournament_info),
       :course => detail_text[0].split(",")[0],
-      :location => "#{detail_text[1]}#{detail_text[2]}".strip
+      :location => "#{detail_text[1]}#{detail_text[2]}"[0..-2]
     }
     details[:purse] = "#{detail_text[3].slice(9..-1)}" if detail_text.length == 4
     details
@@ -85,9 +84,4 @@ class PGA_Tour_Scraper
     end
   end
 
-end
-
-blah = PGA_Tour_Scraper.new
-blah.tournaments.each do |tournament|
-  puts "#{tournament.name}, #{tournament.course}, #{tournament.start_date}, #{tournament.end_date}"
 end

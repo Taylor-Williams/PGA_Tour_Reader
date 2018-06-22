@@ -9,8 +9,8 @@ class PGATourReader::CLI
     # listens to a reponse
     # scrapes the data they want
     # loops the response til they are done
+    # blah = PGA_Tour_Scraper.new
     prompt
-
   end
 
   def prompt
@@ -20,8 +20,8 @@ class PGATourReader::CLI
     # also gives me some practice with Time B)
     puts "say \"list\" to list all the tournaments for the current PGA Tour season"
     #https://www.pgatour.com/tournaments/schedule.html
-    puts "for \"all\" the tournaments for a specific month please list the month"
-    puts "for a specific tournament list the tournament name or date"
+    puts "for all the tournaments of a specific month type the month number (0-12)"
+    puts "for a specific tournament list the tournament date (mm/dd)"
     puts "say \"exit\" to quit"
     get_requested_info(gets.strip.downcase)
   end
@@ -30,19 +30,9 @@ class PGATourReader::CLI
     unless request == "exit"
       case request
       when "list"
-        puts "OCT 5 - 8"
-        puts "OCT 12 - 15"
-        puts "OCT 19 - 22"
-        puts "OCT 26 - 29"
-        puts "OCT 26 - 29"
-        puts "NOV 2 - 5"
-        puts "NOV 9 - 12"
-        puts "NOV 16 - 19"
+        puts "some tournaments"
       when "month"
-        puts "OCT 12 - 15"
-        puts "OCT 19 - 22"
-        puts "OCT 26 - 29"
-        puts "OCT 26 - 29"
+        puts "some month"
       when "specific tournament"
         puts "getting_tournament_information"
       else
