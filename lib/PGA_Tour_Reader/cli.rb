@@ -20,7 +20,7 @@ class PGATourReader::CLI
     # also gives me some practice with Time B)
     puts "say \"list\" to list all the tournaments for the current PGA Tour season"
     #https://www.pgatour.com/tournaments/schedule.html
-    puts "for all the tournaments of a specific month type the month number (0-12)"
+    puts "for all the tournaments of a specific month type the month number (1-12)"
     puts "for a specific tournament list the tournament date (mm/dd)"
     puts "say \"exit\" to quit"
     get_requested_info(gets.strip.downcase)
@@ -28,13 +28,13 @@ class PGATourReader::CLI
 
   def get_requested_info(request)
     unless request == "exit"
-      case request
-      when "list"
+      case
+      when request == "list"
         PGA_Tour_Scraper.new()
         PGA_Season.all.first.list_dates_names
-      when "month"
-        puts "some month"
-      when "specific tournament"
+      when /\d\d?/ =~ request && request.to_i.between?(1,12)
+        PGA_Season.get_tournaments_by_month(request.to_i)
+      when request == "specific tournament"
         puts "getting_tournament_information"
       else
         puts "i'm not sure what you said can you please give me a request in the"
