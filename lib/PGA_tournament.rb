@@ -1,34 +1,31 @@
 class PGA_Tournament
 
-  attr_accessor :start_date, :end_date, :purse, :name, :location, :winner, :cup_points, :url, :course, :winnings
-
-  @@all = []
+  attr_accessor :start_date, :end_date, :attributes, :purse, :name, :location, :winner, :cup_points, :url, :course, :winnings
 
   def initialize(start_date, end_date, attributes = {})
     @start_date = start_date
     @end_date = end_date
     self.add_attributes(attributes)
-    save
-  end
-
-  def self.all
-    @@all
   end
 
   #accepts hash of many tournament attributes and assigns them to self
   def add_attributes(attributes)
+    @attributes = attributes
     attributes.each {|key, value| self.send("#{key}=", value)}
   end
 
   #prints all attributes self has
   def print_attributes
-    puts "the location of the tournament was #{@location}"
-    @url? url = @url : url = "not available"
-    puts "the url for the tournament is #{url}"
-    puts "the course name is #{@course}"
-    puts "the total purse of the tournament was #{@purse}"
-    puts "the winner of the tournament was #{@winner}"
-    puts "#{@winner} got #{@cup_points} fedex cup points and won #{@winnings}"
+    @attributes.each{|attribute, value| puts "#{attribute}: #{value}"}
+  end
+
+  def get_attribute(attribute)
+    @attributes.contain?(attribute) ? @attributes[:attribute.to_s] : puts "that is not a valid attribute"
+  end
+
+  def list_attributes
+    @attributes.keys[0..-2].each{|a| print "#{a}, "}
+    puts attributes.keys.last
   end
 
   def save

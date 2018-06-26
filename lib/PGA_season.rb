@@ -49,6 +49,7 @@ class PGA_Season
          puts "you have selected the following tournament:"
          got_tournament.print_date_name
          puts "here is some more information about that tournament:"
+         got_tournament.list_attributes
          got_tournament.print_attributes
        else
          puts "you didn't input the date of an official PGA tournament"
