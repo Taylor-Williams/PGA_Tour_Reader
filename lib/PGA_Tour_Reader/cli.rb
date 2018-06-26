@@ -29,7 +29,7 @@ class PGATourReader::CLI
       case
       when request == "list"
         PGA_Tour_Scraper.new()
-        PGA_Season.all.first.list_all_for_season
+        PGA_Season.get_season_by_year(Time.now.strftime("%Y")).list_all_for_season
       when PGATourReader::CLI_Helper.is_month_day?(request)
         PGATourReader::CLI_Helper.select_tournament(PGA_Season.get_tournament(request))
       when PGATourReader::CLI_Helper.is_month?(request)

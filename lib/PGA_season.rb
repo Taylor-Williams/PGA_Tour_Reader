@@ -26,6 +26,11 @@ class PGA_Season
     end
   end
 
+  def self.get_season_by_year(year)
+    season = self.all.detect{|season| season.year == year}
+    season ? season : PGA_Tour_Scraper.new(year)
+  end
+
   def self.get_tournaments_by_month(month_number, year = Time.now.strftime("%Y"))
     season = self.all.detect {|season| season.year == year}
     if season
