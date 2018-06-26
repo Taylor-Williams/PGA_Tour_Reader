@@ -21,7 +21,11 @@ class PGA_Tournament
 
   def get_attribute(attribute)
     works = @attributes.keys.detect{|key| key.to_s == attribute}
-    works ? puts works : puts "that is not a valid attribute"
+    if works
+      puts @attributes[works]
+    else
+      puts "that is not an attribute"
+    end
   end
 
   def list_attributes
