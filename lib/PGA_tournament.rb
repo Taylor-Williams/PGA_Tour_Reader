@@ -1,6 +1,6 @@
 class PGA_Tournament
 
-  attr_accessor :start_date, :end_date, :purse, :name, :location, :winner, :cup_points, :url, :course
+  attr_accessor :start_date, :end_date, :purse, :name, :location, :winner, :cup_points, :url, :course, :winnings
 
   @@all = []
 
@@ -21,13 +21,20 @@ class PGA_Tournament
 
   def list_attributes
     puts "the location of the tournament was #{@location}"
-    puts "the url for the tournament is #{@url}"
+    @url? url = @url : url = "not available"
+    puts "the url for the tournament is #{url}"
     puts "the course name is #{@course}"
     puts "the total purse of the tournament was #{@purse}"
+    puts "the winner of the tournament was #{@winner}"
+    puts "#{@winner} got #{@cup_points} fedex cup points and won #{@winnings}"
   end
 
   def save
     self.class.all << self
+  end
+
+  def list_date_name()
+      puts "#{self.start_date} - #{self.end_date}, #{self.name}"
   end
 
 end

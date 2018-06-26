@@ -20,17 +20,16 @@ class PGA_Season
     self.class.all << self
   end
 
-  def list_dates_names()
+  def list_all_for_season()
     @tournaments.each do |tournament|
-      puts "#{tournament.start_date} - #{tournament.end_date}, #{tournament.name}"
+      tournament.list_date_name
     end
   end
 
   def self.get_tournaments_by_month(month_number, year = Time.now.strftime("%Y"))
     season = self.all.detect {|season| season.year == year}
     if season
-      got_tournaments = season.tournaments.select {|tournament| tournament.start_date.month == month_number.to_i || tournament.end_date.month == month_number.to_i}
-      got_tournaments.each {|tourny| puts "#{tourny.start_date} - #{tourny.end_date} : #{tourny.name}"}
+      season.tournaments.select {|tournament| tournament.start_date.month == month_number.to_i || tournament.end_date.month == month_number.to_i}
     else
       puts "I don't have the #{year} season on file let me load the data"
       PGA_Tour_Scraper.new(year)
@@ -47,11 +46,12 @@ class PGA_Season
         (tournament_date <=> tournament.start_date) > -1 && (tournament_date <=> tournament.end_date) < 1
       end
        if got_tournament
-         puts "you have selected the following tournament: #{got_tournament.start_date} - #{got_tournament.end_date} : #{got_tournament.name}"
+         puts "you have selected the following tournament:"
+         got_tournament.list_date_name
          puts "here is some more information about that tournament:"
          got_tournament.list_attributes
        else
-         puts "you didn't input a date when an official PGA tournament happened."
+         puts "you didn't input the date of an official PGA tournament"
        end
     else
       puts "that date is invalid, make sure to use the format of mm/dd"
