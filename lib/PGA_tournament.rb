@@ -20,7 +20,8 @@ class PGA_Tournament
   end
 
   def get_attribute(attribute)
-    @attributes.contain?(attribute) ? @attributes[:attribute.to_s] : puts "that is not a valid attribute"
+    works = @attributes.keys.detect{|key| key.to_s == attribute}
+    works ? puts works : puts "that is not a valid attribute"
   end
 
   def list_attributes
