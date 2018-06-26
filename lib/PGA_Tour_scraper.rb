@@ -17,6 +17,7 @@ class PGA_Tour_Scraper
     scrape_tour_page
   end
 
+  #scrapes parses and zips all tournaments and their attributes for a season
   def scrape_tour_page
     page = Nokogiri::HTML(open("#{@path}"))
     date_scraper(page) #instantiates all tournaments from this season by dates
@@ -25,6 +26,7 @@ class PGA_Tour_Scraper
     @season.tournaments.each_with_index {|tournament, index| tournament.add_attributes(tournament_attributes[index])}
   end
 
+  #scrapes all dates for a given season and returns an array of created Tournaments
   def date_scraper(page)
     page.css('.num-date').each do |date_info|
       dates = PGA_Tour_Parser.date_parser(date_info.children[1].children.text, date_info.children[3].children.text.strip)
@@ -32,6 +34,7 @@ class PGA_Tour_Scraper
     end
   end
 
+  #scrapes name location course url and purse data and returns them in a hash
   def attribute_scraper(page)
     page.css(".tournament-text").map {|tournament_info| PGA_Tour_Parser.attribute_parser(tournament_info)}
   end

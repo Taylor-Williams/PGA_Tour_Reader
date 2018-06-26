@@ -15,11 +15,13 @@ class PGA_Tournament
     @@all
   end
 
+  #accepts hash of many tournament attributes and assigns them to self
   def add_attributes(attributes)
     attributes.each {|key, value| self.send("#{key}=", value)}
   end
 
-  def list_attributes
+  #prints all attributes self has
+  def print_attributes
     puts "the location of the tournament was #{@location}"
     @url? url = @url : url = "not available"
     puts "the url for the tournament is #{url}"
@@ -33,8 +35,9 @@ class PGA_Tournament
     self.class.all << self
   end
 
-  def list_date_name()
-      puts "#{self.start_date} - #{self.end_date}, #{self.name}"
+  #prints basic information about self in (2/2 - 2/6: Greenbriar Tournament) format
+  def print_date_name()
+      puts "#{self.start_date} - #{self.end_date}: #{self.name}"
   end
 
 end

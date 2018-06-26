@@ -14,7 +14,7 @@ class PGATourReader::CLI
   end
 
   def prompt
-    puts "current date is 20#{Time.now.strftime("%y/%m/%d")} in yyyy/mm/dd"
+    puts "current date is #{Time.now.strftime("%Y/%m/%d")} in yyyy/mm/dd"
     # this is to remind the user of nearby weekend dates or to help them
     # think of a month to request data for
     # also gives me some practice with Time B)
@@ -35,7 +35,7 @@ class PGATourReader::CLI
       when /\d\d?\/\d\d?/ =~ request && request.split("/")[0].to_i.between?(1,12) && request.split("/")[1].to_i.between?(1,31)
         PGA_Season.get_tournament(request)
       when /\d\d?/ =~ request && request.to_i.between?(1,12)
-        PGA_Season.get_tournaments_by_month(request).each{|tournament| tournament.list_date_name}
+        PGA_Season.get_tournaments_by_month(request).each{|tournament| tournament.print_date_name}
       else
         puts "i'm not sure what you said can you please give me a request in the"
         puts "format requested, case insensitive"

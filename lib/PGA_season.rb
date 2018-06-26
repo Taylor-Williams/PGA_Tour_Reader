@@ -22,7 +22,7 @@ class PGA_Season
 
   def list_all_for_season()
     @tournaments.each do |tournament|
-      tournament.list_date_name
+      tournament.print_date_name
     end
   end
 
@@ -47,9 +47,9 @@ class PGA_Season
       end
        if got_tournament
          puts "you have selected the following tournament:"
-         got_tournament.list_date_name
+         got_tournament.print_date_name
          puts "here is some more information about that tournament:"
-         got_tournament.list_attributes
+         got_tournament.print_attributes
        else
          puts "you didn't input the date of an official PGA tournament"
        end
