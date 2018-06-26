@@ -21,7 +21,7 @@ class PGATourReader::CLI
     #https://www.pgatour.com/tournaments/schedule.html
     puts "for all the tournaments of a specific month type the month number (1-12)"
     puts "for a specific tournament list any date it was played (mm/dd)"
-    puts "say \"exit\" to quit"
+    puts "say \"exit\" to quit from PGA_Tour_Reader"
     get_requested_info(gets.strip.downcase)
   end
 
@@ -38,9 +38,10 @@ class PGATourReader::CLI
           tournament.print_date_name
           puts "here is some more information about that tournament:"
           tournament.list_attributes
-          puts "which attribute would you like to choose?"
+          puts "If you want a specific attribute type one of the words above"
+          puts "If you want a list of all the information type \"list\""
           input = gets.strip.downcase
-          tournament.get_attribute(input)
+          input == "list" ? tournament.print_attributes : tournament.get_attribute(input)
         else
           puts "you didn't input the date of an official PGA tournament"
         end
