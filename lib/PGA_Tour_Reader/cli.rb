@@ -1,6 +1,5 @@
 #CLI Controller
 #supposed to ask for and recieve input
-
 class PGATourReader::CLI
 
   def call
@@ -32,19 +31,7 @@ class PGATourReader::CLI
         PGA_Tour_Scraper.new()
         PGA_Season.all.first.list_all_for_season
       when PGATourReader::CLI_Helper.is_month_day?(request)
-        tournament = PGA_Season.get_tournament(request)
-        if tournament
-          puts "you have selected the following tournament:"
-          tournament.print_date_name
-          puts "here is some more information about that tournament:"
-          tournament.list_attributes
-          puts "If you want a specific attribute type one of the words above"
-          puts "If you want a list of all the information type \"list\""
-          input = gets.strip.downcase
-          input == "list" ? tournament.print_attributes : tournament.get_attribute(input)
-        else
-          puts "you didn't input the date of an official PGA tournament"
-        end
+        PGATourReader::CLI_Helper.select_tournament(PGA_Season.get_tournament(request))
       when PGATourReader::CLI_Helper.is_month?(request)
         PGA_Season.get_tournaments_by_month(request).each{|tournament| tournament.print_date_name}
       else

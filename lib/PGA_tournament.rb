@@ -25,11 +25,12 @@ class PGA_Tournament
     works = @attributes.keys.detect{|key| key.to_s == attribute}
     if works
       puts @attributes[works]
-    else
-      puts "that is not a valid attribute"
     end
   end
 
+  def is_attribute?(attribute)
+    @attributes.keys.detect{|key| key.to_s == attribute}
+  end
   #lists all attributes self has
   def list_attributes
     @attributes.keys[0..-2].each{|a| print "#{a}, "}
