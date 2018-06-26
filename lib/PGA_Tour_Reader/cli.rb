@@ -32,10 +32,10 @@ class PGATourReader::CLI
       when request == "list"
         PGA_Tour_Scraper.new()
         PGA_Season.all.first.list_dates_names
+      when /\d\d?\/\d\d?/ =~ request && request.split("/")[0].to_i.between?(1,12) && request.split("/")[1].to_i.between?(1,31)
+        PGA_Season.get_tournament(request)
       when /\d\d?/ =~ request && request.to_i.between?(1,12)
-        PGA_Season.get_tournaments_by_month(request.to_i)
-      when request == "specific tournament"
-        puts "getting_tournament_information"
+        PGA_Season.get_tournaments_by_month(request)
       else
         puts "i'm not sure what you said can you please give me a request in the"
         puts "format requested, case insensitive"
