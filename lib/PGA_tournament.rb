@@ -19,6 +19,13 @@ class PGA_Tournament
     attributes.each {|key, value| self.send("#{key}=", value)} if attributes
   end
 
+  def list_attributes
+    puts "the location of the tournament was #{@location}"
+    puts "the url for the tournament is #{@url}"
+    puts "the course name is #{@course}"
+    puts "the total purse of the tournament was #{@purse}"
+  end
+
   def save
     self.class.all << self
   end

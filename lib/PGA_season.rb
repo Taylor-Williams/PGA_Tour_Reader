@@ -46,7 +46,13 @@ class PGA_Season
       got_tournament = self.get_tournaments_by_month(dates[0]).detect do |tournament|
         (tournament_date <=> tournament.start_date) > -1 && (tournament_date <=> tournament.end_date) < 1
       end
-      puts "#{got_tournament.start_date} - #{got_tournament.end_date} : #{got_tournament.name}"
+       if got_tournament
+         puts "you have selected the following tournament: #{got_tournament.start_date} - #{got_tournament.end_date} : #{got_tournament.name}"
+         puts "here is some more information about that tournament:"
+         got_tournament.list_attributes
+       else
+         puts "you didn't input a date when an official PGA tournament happened."
+       end
     else
       puts "that date is invalid, make sure to use the format of mm/dd"
     end
