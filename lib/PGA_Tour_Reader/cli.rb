@@ -31,7 +31,7 @@ class PGATourReader::CLI
       when request == "list"
         PGA_Tour_Scraper.new()
         PGA_Season.all.first.list_all_for_season
-      when /\d\d?\/\d\d?/ =~ request && request.split("/")[0].to_i.between?(1,12) && request.split("/")[1].to_i.between?(1,31)
+      when PGATourReader::CLI_Helper.is_month_day?(request)
         tournament = PGA_Season.get_tournament(request)
         if tournament
           puts "you have selected the following tournament:"
@@ -45,7 +45,7 @@ class PGATourReader::CLI
         else
           puts "you didn't input the date of an official PGA tournament"
         end
-      when /\d\d?/ =~ request && request.to_i.between?(1,12)
+      when PGATourReader::CLI_Helper.is_month?(request)
         PGA_Season.get_tournaments_by_month(request).each{|tournament| tournament.print_date_name}
       else
         puts "i'm not sure what you said can you please give me a request in the"
