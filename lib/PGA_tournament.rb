@@ -16,7 +16,7 @@ class PGA_Tournament
   end
 
   def add_attributes(attributes)
-    attributes.each {|key, value| self.send("#{key}=", value)} if attributes
+    attributes.each {|key, value| self.send("#{key}=", value)}
   end
 
   def list_attributes
