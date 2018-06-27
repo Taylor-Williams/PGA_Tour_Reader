@@ -29,7 +29,7 @@ class PGATourReader::CLI
         puts ""
       else
         puts "I'm not sure what you said can you please give me a"
-        puts "request in theformat requested, case insensitive."
+        puts "request in the format requested, case insensitive."
       end
       prompt
     end

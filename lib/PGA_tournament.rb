@@ -28,6 +28,7 @@ class PGATourReader::PGA_Tournament
     end
   end
 
+  #checks to see if attribute this tournament contains and returns attributes' symbol
   def is_attribute?(attribute)
     @attributes.keys.detect{|key| key.to_s == attribute}
   end
