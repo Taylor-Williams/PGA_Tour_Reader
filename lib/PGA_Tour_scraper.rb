@@ -1,13 +1,6 @@
-require 'pry'
-require 'date'
-require 'open-uri'
-require 'nokogiri'
-
-require_relative './PGA_tournament.rb'
-require_relative './PGA_season.rb'
 require_relative './PGA_Tour_parser.rb'
 
-class PGA_Tour_Scraper
+class PGATourReader::PGA_Tour_Scraper
   include PGA_Tour_Parser
 
   attr_accessor :path, :year, :season
@@ -15,7 +8,7 @@ class PGA_Tour_Scraper
   def initialize(year = Time.now.strftime("%Y"), path = "https://www.pgatour.com/tournaments/schedule.html")
     @path = path
     @year = year
-    @season = PGA_Season.new(@year)
+    @season = PGATourReader::PGA_Season.new(@year)
     scrape_tour_page
   end
 
@@ -32,7 +25,7 @@ class PGA_Tour_Scraper
   def date_scraper(page)
     page.css('.num-date').each do |date_info|
       dates = date_parser(date_info.children[1].children.text, date_info.children[3].children.text.strip)
-      @season.tournaments << PGA_Tournament.new(dates[0], dates[1], @season)
+      @season.tournaments << PGATourReader::PGA_Tournament.new(dates[0], dates[1], @season)
     end
   end
 

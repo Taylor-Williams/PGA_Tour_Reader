@@ -12,20 +12,26 @@ class PGATourReader::CLI_Helper
   def self.select_tournament(tournament)
     if tournament
       puts "you have selected the following tournament:"
+      puts ""
       tournament.print_date_name
-      puts "here is the extra information I have about that tournament:"
+      puts ""
+      puts "If you want a specific attribute type one of the below:"
       tournament.list_attributes
-      puts "If you want a specific attribute type one of the above"
+      puts ""
       puts "If you want a list of all the information type \"list\""
       puts "If you want to exit this menu type \"exit\""
+      puts ""
       input = gets.strip.downcase
-      puts tournament.is_attribute?(input)
       unless input == "exit"
-        case input
-        when "list"
+        case
+        when input == "list"
+          puts ""
           tournament.print_attributes
+          puts ""
         when tournament.is_attribute?(input)
+          puts ""
           tournament.get_attribute(input)
+          puts ""
         else
           puts "please list a valid attribute or type \"list\" or \"exit\""
         end

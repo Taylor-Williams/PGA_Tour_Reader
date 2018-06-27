@@ -1,4 +1,4 @@
-class PGA_Tournament
+class PGATourReader::PGA_Tournament
 
   attr_accessor :start_date, :end_date, :season, :attributes, :purse, :name, :location, :winner, :cup_points, :url, :course, :winnings
 
@@ -20,19 +20,21 @@ class PGA_Tournament
     @attributes.each{|attribute, value| puts "#{attribute}: #{value}"}
   end
 
-  #gets a single attribute
+  #gets a single attribute's value
   def get_attribute(attribute)
-    works = @attributes.keys.detect{|key| key.to_s == attribute}
-    if works
-      puts @attributes[works]
+    request = is_attribute?(attribute)
+    if request
+      puts "#{request} : #{@attributes[request]}"
     end
   end
 
   def is_attribute?(attribute)
     @attributes.keys.detect{|key| key.to_s == attribute}
   end
+
   #lists all attributes self has
   def list_attributes
+    puts ""
     @attributes.keys[0..-2].each{|a| print "#{a}, "}
     puts attributes.keys.last
   end
