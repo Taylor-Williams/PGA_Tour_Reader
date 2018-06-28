@@ -1,7 +1,4 @@
-require_relative './PGA_Tour_parser.rb'
-
 class PGATourReader::PGA_Tour_Scraper
-  include PGA_Tour_Parser
 
   attr_accessor :path, :year, :season
 
@@ -24,13 +21,13 @@ class PGATourReader::PGA_Tour_Scraper
   #scrapes all dates for a given season and returns an array of created Tournaments
   def date_scraper(page)
     page.css('.num-date').each do |date_info|
-      dates = date_parser(date_info.children[1].children.text, date_info.children[3].children.text.strip)
+      dates = PGATourReader::PGA_Tour_Parser.date_parser(date_info.children[1].children.text, date_info.children[3].children.text.strip)
       @season.tournaments << PGATourReader::PGA_Tournament.new(dates[0], dates[1], @season)
     end
   end
 
   #scrapes name location course url and purse data and returns them in a hash
   def attribute_scraper(page)
-    page.css(".tournament-text").map {|tournament_info| attribute_parser(tournament_info)}
+    page.css(".tournament-text").map {|tournament_info| PGATourReader::PGA_Tour_Parser.attribute_parser(tournament_info)}
   end
 end
