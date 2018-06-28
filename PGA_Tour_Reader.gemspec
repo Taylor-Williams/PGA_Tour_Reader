@@ -9,8 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["'Taylor Williams'"]
   spec.email         = ["'taylor@thewilliams.net'"]
 
-  spec.summary       = %q{: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{: Write a longer description or delete this line.}
+  spec.summary       = %q{PGATourReader scrapes information from the PGATour website and loads the information into a CLI}
   spec.homepage      = "https://github.com/Taylor-Williams/PGA_Tour_Reader"
   spec.license       = "MIT"
 
